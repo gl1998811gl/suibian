@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>汽车租赁系统</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/style.css" rel="stylesheet" />
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        html {
+            min-height: 100%;
+            _height:100%;
+            height:100%;
+        }
+        body {
+            min-height: 100%;
+            _height:100%;
+            height:100%;
+        }
+        .navbar{
+            opacity: 0.8;
+        }
+        .container{
+            background-color: white;
+        }
+        #uls li{
+            list-style: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand">汽车租赁管理系统</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/query">客人查询</a></li>
+            <li><a href="/lease">租赁登记</a></li>
+            <li><a href="/return">归还登记</a></li>
+            <li><a href="/statistics">统计分析</a></li>
+            <li><a href="/category">类别档案</a></li>
+            <li><a href="/carfiles">汽车档案</a></li>
+            <li><a href="javascript:;" id="tuic">退出系统</a></li>
+            <li><a href="/data">数据显示</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
+</nav>
+<div class="container" style="margin-top: 80px">
+    <div class="row" style="padding-top: 20px;    padding-top: 20px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;">
+        <div class="col-lg-2 col-md-2 col-sm-2">
+            <ul id="uls">
+                <li class="out">租出统计</li>
+                <li class="back">归还统计</li>
+
+            </ul>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <table class="table  table-striped" >
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>汽车名称</th>
+                    <th>每天租金</th>
+                    <th>品牌</th>
+                    <th id="rent">租车次数</th>
+                    <th id="back" style='display:none'>归还次数</th>
+                </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <div id="pagenavbox"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/PageNav.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    //获取所有租出汽车档案
+    //租出统计
+    var namee;
+    outRent();
+    function outRent(){
+        $.get('/rentCar',function (data) {
+            // console.log(data.results);
+            $.each(data.results,function (i,n) {
+                // console.log(i,n);
+                if(n.cishu>0){
+                    $tr = $("<tr></tr>");
+                    $("<td></td>").html(n.sid).appendTo($tr);
+                    $("<td id='name'></td>").html(n.name).appendTo($tr);
+                    $("<td></td>").html(n.num).appendTo($tr);
+                    $("<td></td>").html(n.leix).appendTo($tr);
+                    $("<td></td>").html(n.cishu).appendTo($tr);
+                    $tr.appendTo($("#tbody"));
+                }else{
+                    console.log(n.sid+"没有出租过的哦!")
+                }
+
+            })
+        });
+    }
+    $(".out").click(function () {
+        $("#tbody").html("");
+        $("#rent").show();
+        $("#back").hide();
+        outRent();
+    })
+    //    归还统计 归还了的话数据库里面就会删除 但是我怎么判断归还的呢
+    //    归还的不就是
+    $(".back").click(function () {
+        $("#tbody").html("");
+        $("#rent").hide();
+        $("#back").show();
+        $.get("/guihuansuoyou",function (data) {
+            $.each(data.results,function (i,n) {
+                // console.log(n);
+                if(n.guihuan>0){
+                    $tr = $("<tr></tr>");
+                    $("<td></td>").html(n.sid).appendTo($tr);
+                    $("<td id='name'></td>").html(n.name).appendTo($tr);
+                    $("<td></td>").html(n.num).appendTo($tr);
+                    $("<td></td>").html(n.leix).appendTo($tr);
+                    $("<td></td>").html(n.guihuan).appendTo($tr);
+                    $tr.appendTo($("#tbody"));
+                }else{
+                    console.log(n.sid+"没有出租过的哦!")
+                }
+
+            })
+        })
+    })
+
+
+
+
+
+</script>
+</body>
+</html>

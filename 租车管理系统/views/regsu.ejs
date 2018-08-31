@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>注册 - 说说</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        em.r{
+            display: inline-block;
+            width:20px;
+            height: 20px;
+            background-color: yellowgreen;
+            color:white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+        }
+        em.w{
+            display: inline-block;
+            width:20px;
+            height: 20px;
+            background-color: red;
+            color:white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">租车系统</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">全部用户</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li  class="active"><a href="/regsu">注册</a></li>
+                <li><a href="/login">登陆</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div class="col-lg-4">
+        <h1>欢迎注册</h1>
+        <form>
+            <div class="form-group">
+                <label for="yonghuming">用户名</label>
+                <input type="text" class="form-control" name="yonghuming" id="yonghuming" placeholder="用户名可以是中文">
+                <em class=""></em>
+                <span class="explain"></span>
+            </div>
+            <div class="form-group">
+                <label for="mima">密码</label>
+                <input type="password" class="form-control" name="mima" id="mima" placeholder="密码最少6位">
+                <em class=""></em>
+                <span class="explain"></span>
+            </div>
+            <div class="form-group">
+                <label for="querenmima">确认密码</label>
+                <input type="password" class="form-control" id="querenmima" placeholder="请重复输入">
+                <em class=""></em>
+                <span class="explain"></span>
+            </div>
+            <button type="button" class="btn btn-default" id="zhuce">注册</button>
+        </form>
+    </div>
+</div>
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var yonghumingcheck = false
+    var mimacheck = false;
+    var querecheck = false;
+
+    //同户名内容判断
+    $("#yonghuming").blur(function () {
+        var yonghuming = $(this).val();
+        if (/[\!\@\#\$\%\^\&\*\(\)]/.test(yonghuming)) {
+            $(this).siblings("em").attr("class","w").html("x")
+            $(this).siblings(".explain").html("用户名有非法字符")
+        }
+        var $this = $(this);
+        $.get("/checkuser?yonghuming=" + yonghuming,function (data) {
+            if (data.result == -1){
+                $this.siblings("em").attr("class","w").html("x");
+                $this.siblings(".explain").html("用户名被占用");
+                yonghumingcheck = false;
+            }else{
+                $this.siblings("em").attr("class","r").html("√");
+                $this.siblings(".explain").html("用户名可以使用");
+                yonghumingcheck = true;
+            }
+        })
+    })
+
+    $("input[type = text],input[type=password]").focus(function () {
+        $(this).siblings("em").attr("class","").html("");
+        $(this).siblings(".explain").html("")
+    })
+    //密码长度判断
+    $("#mima").blur(function () {
+        var mima = $(this).val();
+        if (mima.length < 6){
+            $(this).siblings("em").attr("class","w").html("x");
+            $(this).siblings(".explain").html("密码不能小于六位");
+            mimacheck = false;
+            return;
+        } else{
+            $(this).siblings("em").attr("class","r").html("√");
+            $(this).siblings(".explain").html("密码合法");
+            mimacheck = true;
+        }
+    });
+    //判断密码一致不
+    $("#querenmima").blur(function () {
+        var querenmima = $(this).val();
+        var mima = $("#mima").val();
+        if (querenmima!= mima){
+            $(this).siblings("em").attr("class","w").html("x");
+            $(this).siblings(".explain").html("填写不一致！请重试");
+            querecheck = false;
+            return;
+        } else{
+            $(this).siblings("em").attr("class","r").html("√");
+            $(this).siblings(".explain").html("密码一致");
+            querecheck = true;
+            return;
+        }
+    })
+
+    //点击注册按钮是判断
+    $("#zhuce").click(function () {
+        var str = $("form").serialize();
+        if (querecheck && mimacheck && yonghumingcheck){
+            $.post("/zhuc",str,function (data) {
+                if (data.result == 1){
+                    alert("注册成功")
+                    window.location = "index";
+                } else if(data.result == -1){
+                    alert("用户名被占用")
+                }else if(data.result == -2){
+                    alert("抱歉,服务器错误")
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

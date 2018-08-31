@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>汽车租赁系统</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link href="/css/style.css" rel="stylesheet" />
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        html {
+            min-height: 100%;
+            _height:100%;
+            height:100%;
+        }
+        body {
+            min-height: 100%;
+            _height:100%;
+            height:100%;
+            /*background: url("images/8.jpg") no-repeat;*/
+            /*background-size: 100% 100%;*/
+        }
+        .navbar{
+            opacity: 0.8;
+        }
+        .container{
+            opacity: 0.8;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand">汽车租赁管理系统</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/query">客人查询</a></li>
+            <li><a href="/lease">租赁登记</a></li>
+            <li><a href="/return">归还登记</a></li>
+            <li><a href="/statistics">统计分析</a></li>
+            <li><a href="/category">类别档案</a></li>
+            <li><a href="/carfiles">汽车档案</a></li>
+            <li><a href="javascript:;" id="tuic">退出系统</a></li>
+            <li><a href="/data">数据显示</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
+</nav>
+<div class="container" style="margin-top: 80px">
+    <table class="table  table-striped"  style="margin-bottom: 40px;">
+        <thead>
+        <tr>
+            <th></th>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>租凭名称</th>
+            <th>租凭时长</th>
+            <th>每天价格</th>
+            <th>已付押金</th>
+            <th>应付金额</th>
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <p>
+                    已付押金：
+                    <input type="text" class="form-control" id="yifuyajin">
+                </p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <p>
+                    应付金额：
+                    <input type="text" class="form-control" id="yingfujine">
+                </p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <p>
+                    找零金额：
+                    <input type="text" class="form-control" id="zhaolingjine">
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8" ></div>
+            <div class="col-lg-2 col-md-2 col-sm-2" >
+                <p><button type="button" class="btn btn-success" style="width: 100px;" id="guiHuanBtn">确定</button></p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2" >
+                <p><button type="button" class="btn btn-danger" style="width: 100px;">关闭</button></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/PageNav.js"></script>
+<script type="text/javascript">
+    $.get('/getzupinxinxi',function (data) {
+        $.each(data.result,function(i, n){
+            $tr = $("<tr></tr>");
+            $("<td><input type='radio' id='check' data-name='"+n.qichemingchen+"' data-yifu='" + n.kerenzhifu +"' data-sid='" + n.sid +"' data-yingfu='"+(n.zupingshichang * n.zujin+1000)+"' name='cicici'/></td>").appendTo($tr);
+            $("<td></td>").html(i+1).appendTo($tr);
+            $("<td></td>").html(n.xuan).appendTo($tr);
+            $("<td></td>").html(n.qichemingchen).appendTo($tr);
+            $("<td></td>").html(n.zupingshichang).appendTo($tr);
+            $("<td></td>").html(n.zujin).appendTo($tr);
+            $("<td></td>").html(n.kerenzhifu).appendTo($tr);
+            $("<td></td>").html(n.zupingshichang * n.zujin).appendTo($tr);
+            $tr.appendTo($("#tbody"));
+        });
+    })
+    //表格默认被选中，显示底部框内容
+    $('#tbody').delegate("input[name=cicici]","click",function () {
+        var yifu = $(this).data('yifu');
+        var yingfu = $(this).data('yingfu');
+        $("#guiHuanBtn").attr("data-sid",$(this).attr("data-sid"))
+        $('#yifuyajin').val(yifu);
+        $('#yingfujine').val(yingfu);
+        $('#zhaolingjine').val(yifu - yingfu);
+    })
+
+    //点击确定时，归还并删除
+    $('#guiHuanBtn').click(function () {
+        var sid = $(this).attr("data-sid");
+        $.get('/delguihuan?sid='+sid,function (data) {
+            console.log(data)
+            if(data.result == 1){
+                alert('归还成功');
+                window.location = '/return';
+            }
+        })
+    })
+
+    $("#tui").click(function () {
+        $.get("/tui" ,function (data) {
+            console.log(data.resul);
+            if (data.resul == 1){
+                alert("退出成功");
+                window.location.href = "/login"
+            } else{
+                alert("退出失败")
+            }
+        })
+    })
+</script>
+</body>
+</html>

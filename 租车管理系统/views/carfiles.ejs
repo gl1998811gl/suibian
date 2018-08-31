@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">汽车租赁管理系统</a>
+        </div>
+        <!--导航栏-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/query">客人查询</a></li>
+                <li><a href="/lease">租赁登记</a></li>
+                <li><a href="/return">归还登记</a></li>
+                <li><a href="/statistics">统计分析</a></li>
+                <li><a href="/category">类别档案</a></li>
+                <li><a href="/carfiles">汽车档案</a></li>
+                <li><a href="javascript:;" id="tuic">退出系统</a></li>
+                <li><a href="/data">数据显示</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col-md-12">
+                <!-- Large modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">增加</button>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">填加</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/dangan">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                行号：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="sid">
+                                            </p>
+                                            <div class="alert alert-danger" role="alert" id="sid_tip" style="display:none;">学号已经存在，请检查！</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                租赁名称：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="name">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                所属类型：
+
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <select class="form-control" id="leix" name="leix">
+
+                                                </select>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                租凭价格：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="num">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                计量单位：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="danwei">
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="btn">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//修改-->
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">修改</button>
+
+                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/dangan">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                行号：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="sid" id="sid" disabled>
+                                            </p>
+                                            <div class="alert alert-danger" role="alert" id="sid_tip" style="display:none;">学号已经存在，请检查！</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                租凭名称：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="name" id="name">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                所属类型：
+
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="leixing">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                租凭价格：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="num" id="num">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>
+                                                计量单位：
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                <input type="text" class="form-control" name="danwei" id="danwei">
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="update">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--&lt;!&ndash; Small modal &ndash;&gt;-->
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-sm">删除</button>
+
+                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                确定要删除此用户吗？
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="removebtn" >确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-sm" id="fanhui">返回</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <!--   Basic Table  -->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>行号</th>
+                                    <th>租凭名称</th>
+                                    <th>所属类型</th>
+                                    <th>租聘价格</th>
+                                    <th>计量单位</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody"></tbody>
+                            </table>
+                        </div>
+
+                        <div id="pagenavbox"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/PageNav.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $.get("/leibie",function (data) {
+        console.log(data.results)
+        for (var i = 0 ; i<data.results.length;i++){
+            console.log(data.results[i].name)
+            $(' <option>'+data.results[i].name+'</option>').appendTo($('#leix'));
+        }
+    })
+    //添加
+    $("#btn").click(function () {
+        $.post("/dangan",{
+            sid : parseInt($("input[name=sid]").val()),
+            name : $("input[name=name]").val(),
+            leix : $("select[name=leix]").val(),
+            num : $("input[name=num]").val(),
+            danwei : $("input[name=danwei]").val(),
+            ztai:0,
+            cishu:0,
+            guihuan:0,
+        },function(data){
+            if(data.result == 1){
+                alert("提交成功！");
+                $("input[type=text]").val("");
+                window.location.href="/carfiles";
+            }else if(data.result == -1){
+                alert("提交失败，行号被占用！");
+            }else if(data.result == -2){
+                alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+            }
+        })
+    })
+    //删除
+    $("#tbody").delegate("input[name=a]","click",function () {
+        $("#removebtn").attr("data-sid",$(this).attr("data-sid"))
+        var checked = $(this)[0].checked;
+    })
+    $("#removebtn").click(function () {
+        var sid = $(this).attr("data-sid");
+        var $this = $(this);
+        $.ajax({
+            url : "/dangan/" + sid,
+            type : "delete",
+            success : function(data){
+                // console.log("bb")
+                console.log(data)
+                if(data.result == 1){
+                    alert("删除成功");
+                    $this.parents("tr").remove();
+                    window.location.href="/carfiles"
+                }else{
+                    // console.log("bb")
+                    alert("服务器错误！");
+                    return;
+                    window.location.href="/carfiles"
+                }
+            }
+        });
+
+
+    })
+
+    //修改
+    $("#tbody").delegate(".huo","click",function () {
+        var sid = $(this).attr("data-sid");
+        var checked = $(this)[0].checked;
+        if (checked){
+            $.ajax({
+                url : "/dangan/" + sid,
+                type : "get",
+                success : function(data){
+                    console.log(data.result)
+                    $("input[name=name]").val(data.result.name)
+                    parseInt($("input[name=sid]").val(data.result.sid)),
+                        $("input[name=leixing]").val(data.result.leix),
+                        $("input[name=num]").val(data.result.num),
+                        $("input[name=danwei]").val(data.result.danwei)
+                }
+            })
+        }
+        $("#update").click(function () {
+            if (checked){
+                $.post("/dangan/" + sid,{
+                    sid : parseInt($("#sid").val()),
+                    name : $("#name").val(),
+                    leix : $("input[name=leixing]").val(),
+                    num : $("#num").val(),
+                    danwei : $("#danwei").val(),
+                },function(data){
+                    if(data.result == 1){
+                        // console.log(data)
+                        console.log(data)
+                        // gotopage()
+                        alert("修改成功！");
+
+                        window.location = "/carfiles";
+                    }else{
+                        alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                    }
+                })
+                window.location.href="/carfiles"
+            }else{
+                return;
+            }
+        })
+
+    })
+
+    //请求一次，创建分页条
+    $.get("/dangan?page=1",function(data){
+        //分页条
+        new PageNav({
+            boxid : "pagenavbox",
+            page : 1,
+            pageAmount : data.pageAmount,
+            change : function(pagenumber){
+                gotopage(pagenumber);
+            }
+        });
+
+        gotopage(1);
+    });
+
+    $("input[name=sid]").blur(function(){
+        var sid = parseInt($("input[name=sid]").val());
+        if(isNaN(sid) || !sid || !(sid >= 100000 && sid <= 999999)){
+            $("#sid_tip").removeClass("alert-success").addClass("alert-danger").html("请填写正确的学号，学号是6位数字").show();
+            return;
+        }
+    });
+    //得到焦点的时候，提示框消失
+    $("input[name=sid]").focus(function(){
+        $("#sid_tip").hide();
+    });
+    //Ajax请求，请求JSON数据
+    function gotopage(pagenumber){
+        //清空
+        $("#tbody").empty();
+
+        //获得新的数据
+        $.get("/dangan?page=" + pagenumber,function(data){
+            $.each(data.results,function(i, n){
+                //创建一个tr标签
+                $tr = $("<tr></tr>");
+                $("<td><input type='radio' name='a' class='huo' data-sid='"+n.sid+"'></td>").appendTo($tr);
+                $("<td></td>").html(n.sid).appendTo($tr);
+                $("<td></td>").html(n.name).appendTo($tr);
+                $("<td></td>").html(n.leix).appendTo($tr);
+                $("<td></td>").html(n.num).appendTo($tr);
+                $("<td></td>").html(n.danwei).appendTo($tr);
+                $tr.appendTo($("#tbody"));
+            });
+        });
+    }
+
+    $("#fanhui").click(function () {
+        window.location.href="index"
+    })
+
+    $("#tuic").click(function () {
+        alert("退出成功")
+        window.location.href="/"
+    })
+</script>
+</body>
+<html>
